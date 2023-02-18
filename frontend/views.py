@@ -1,16 +1,17 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 
 
 import os
 import logging
 
-# Create your views here.
 
 from django.views.generic import View
 from django.http import HttpResponse
 from django.conf import settings
 
-class IndexView(view):
+
+# Create your views here.
+class IndexView(View):
     """
     serves the compiled frontend entry point (only works if you hace run `npm run build`)
     """

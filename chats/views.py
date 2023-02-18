@@ -2,7 +2,7 @@
 #from django.views.generic import ListView
 
 from rest_framework import generics
-
+from  django.urls import path
 from .models import Chat
 from .serializers import ChatSerializer
 # Create your views here.
