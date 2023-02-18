@@ -40,11 +40,29 @@ INSTALLED_APPS = [
 
     # local
     'chats.apps.ChatsConfig',
-    'frontend.apps.FrontendConfig',
+    # 'frontend.apps.FrontendConfig',    
+    
+    
+    #3rd party
+    'rest_framework'
 ]
 
+#this locks down the api that denys non authenticated users from certain requests
+#https://www.django-rest-framework.org/api-guide/permissions/
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # Temp - keep for now for the browserable api
+        'rest_framework.authentication.SessionAuthentication', 
+        # permanent token based implimentation in react
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
-    #3rd party
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,6 +73,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+
+
 
 ROOT_URLCONF = 'conf.urls'
 
