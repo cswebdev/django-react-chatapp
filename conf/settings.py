@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # local
+    'api.apps.ApiConfig'
     'chats.apps.ChatsConfig',
-    # 'frontend.apps.FrontendConfig',    
+    'frontend.apps.FrontendConfig',    
     
     
     #3rd party
