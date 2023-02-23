@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body {
+  background-image: url(https://source.unsplash.com/random/1800x1800/?sky?mountain?abstract);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+
+}
