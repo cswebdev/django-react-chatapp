@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import "../App.js";
 
 const INITIAL_STATE = {
@@ -108,6 +107,7 @@ function LogInForm({ setPage }) {
                      className="w-100 mb-3"
                      type="submit"
                      id="log-in"
+                     onClick={() => setPage("chats")}
                   >
                      Log In
                   </Button>

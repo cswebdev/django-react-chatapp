@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import LogInForm from "./components/LogInForm";
 //import Cookies from "js-cookie";
 import RegistrationForm from "./components/RegistrationForm";
+import ChatApp from "./components/ChatRoom";
 import { useState } from "react";
 
 
@@ -22,12 +23,12 @@ function App() {
       
 
 
-         <div className="container">
+         <div className="col-md-12">
          {page === 'login' && <LogInForm setPage={setPage}/>}
 
          {page === 'register' && <RegistrationForm setPage={setPage}/>}
 
-         {/* {page === 'chats' && <ChatRoom setPage={setPage}/>} */}
+          {page === 'chats' && <ChatApp setPage={setPage}/>} 
          </div>
 
          

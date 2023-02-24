@@ -1,0 +1,197 @@
+.container#chat-room-container {
+    margin: 60px auto;
+    background: #fff;
+    padding: 0;
+    border-radius: 15px;
+    height: 80vh;
+}
+
+.room-drawer {
+    border-top: 5px solid rgb(217, 217, 217);
+    padding-top: 10%;
+}
+
+.row {
+    padding: 0;
+
+}
+
+#right-side-panel-header {
+    border-radius: 15px;
+}
+
+
+.profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+}
+
+.settings-tray {
+    background: #eee;
+    padding: 10px 15px;
+    border-radius: 15px 0px 0px 0px;
+}
+
+.g-0 {
+    padding: 0;
+}
+
+
+
+.row.g-0.float-start.d-block {
+    position: relative;
+    width: 290px;
+    background-color: #f1f1f1;
+    margin-right: 10px;
+    border-radius: 15px 0px 0px 15px;
+}
+
+i {
+    margin-top: 10px;
+    font-size: 25px;
+    color: grey;
+    margin-left: 14px;
+    transition: .3s;
+}
+
+i:hover {
+    color: blue;
+    cursor: pointer;
+}
+
+
+
+input {
+    border: none;
+    border-radius: 30px;
+
+}
+
+.placeholder {
+    color: #e3e3e3;
+    font-weight: 300;
+    margin-left: 20px;
+}
+
+:focus {
+    outline: none;
+}
+
+
+
+
+.text {
+    margin-left: 12px;
+    width: 70%;
+}
+
+h6 {
+    margin-top: 6px;
+    margin-bottom: 0;
+}
+
+p {
+    margin: 0;
+}
+
+#right-side-panel-header {
+    height: 100% !important;
+    padding-right: 30px;
+}
+
+.chat-panel {
+    bottom: 0;
+
+}
+
+.col-md-8.w-100 {
+    position: relative;
+
+}
+
+hr {
+    margin: 5px auto;
+    width: 60%;
+}
+
+.chat-bubble {
+    padding: 10px 14px;
+    background: #eee;
+    margin: 10px 30px;
+    border-radius: 9px;
+    position: relative;
+    animation: fadeIn 1s ease-in;
+}
+
+.chat-bubble:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-bottom: 0;
+    margin-top: -10px;
+}
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+button#chat-input {
+    display: inline-block;
+    margin-right: 30px;
+}
+
+.offset-md-9 .chat-bubble {
+    background: blue;
+    color: #fff;
+}
+
+.chat-bubble.bg-secondary {
+    color: white;
+}
+
+.chat-box-tray {
+    background: #eee;
+    display: flex;
+    align-items: baseline;
+    padding: 10px 15px;
+    align-items: center;
+    margin-top: 19px;
+}
+
+.form-control#chat-input {
+    width: 100%;
+    text-align: end;
+}
+
+.button-tray.d-inline-flex.w-100 {
+    position: absolute;
+    bottom: 12px;
+}
+
+/* input {
+    margin: 0 10px;
+    padding: 6px 2px;
+} */
+
+i {
+    color: grey;
+    font-size: 30px;
+    vertical-align: middle;
+}
+
+i:last-of-type {
+    margin-left: 25px;
+}
