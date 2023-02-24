@@ -4,6 +4,8 @@
 from  rest_framework import generics
 from  django.urls import path
 from .models import Chat
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 from .serializers import ChatSerializer
 # Create your views here.
 

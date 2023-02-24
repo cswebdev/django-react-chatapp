@@ -6,7 +6,7 @@
 
   height: 40vh;
   width: 520px;
-  border: 2px solid rgb(200, 200, 200);
+  border: 2px solid rgba(31, 31, 31, 0.066);
   border-radius: 15px;
   padding: 10px;
   background-color: rgba(244, 244, 244, 0.612);
@@ -60,6 +60,16 @@ button#registration-link {
   border-radius: 15px;
 } */
 
+#registration-form h1 {
+  position: relative;
+  top: 0;
+
+  font-size: 40px;
+  font-weight: 400;
+
+  color: rgb(78, 78, 78);
+}
+
 #registration-form {
   display: flex;
   position: relative;
@@ -69,12 +79,17 @@ button#registration-link {
 
   height: 50vh;
   width: 520px;
-  border: 2px solid rgb(200, 200, 200);
+  border: 2px solid rgba(31, 31, 31, 0.066);
   border-radius: 15px;
   padding: 15px;
-  background-color: rgba(244, 244, 244, 0.899);
+  background-color: rgba(244, 244, 244, 0.612);
   min-height: 360px;
 }
+
+
+/* .row.align-items-center {
+  
+} */
 
 button#login-link {
   background: none !important;

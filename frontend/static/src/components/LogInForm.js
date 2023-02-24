@@ -7,20 +7,25 @@ import Cookies from "js-cookie";
 import Button from "react-bootstrap/Button";
 import "../App.js";
 
-const INITIAL_STATE = {
-   username: "",
-   password: "",
-   email: "",
-};
+// const INITIAL_STATE = {
+//    username: "",
+//    password: "",
+//    email: "",
+// };
 //props can't be wrapped in {}. LoginForm(props) was changed to LoginForm({ setAuth }),
 
-function LogInForm({ setPage }) {
-   const [state, setState] = useState(INITIAL_STATE);
+function LogInForm({ setPage, ...props }) {
+   // const [state, setState] = useState(INITIAL_STATE);
+
+   const [user, setUser] = useState({
+      username: "",
+      password: "",
+      email: "",
+   });
 
    const handleInput = (e) => {
       const { name, value } = e.target;
-
-      setState((prevState) => ({
+      setUser((prevState) => ({
          ...prevState,
          [name]: value,
       }));
@@ -39,19 +44,35 @@ function LogInForm({ setPage }) {
             "content-Type": "application/json",
             "X-CSRFToken": Cookies.get("crsftoken"),
          },
-         body: JSON.stringify(state),
+         body: JSON.stringify({
+            username: user.username,
+            password: user.password,
+         }),
       };
 
       //https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
       // this explains .catch
 
-      const responses = await fetch("/dj-rest-auth/login/", options).catch(
+      const response = await fetch("/dj-rest-auth/login/", options).catch(
          handleError
       );
-      if (!responses.ok) {
+
+      if (response.status === 404) {
+         alert("User not found. Please register.");
+         setPage("register");
+         return;
+      }
+
+      if (response.status === 401) {
+         alert("Invalid credentials. Please try again.");
+         return;
+      }
+
+      if (!response.ok) {
          throw new Error("Network Response was not OK");
       }
-      const data = await responses.json();
+
+      const data = await response.json();
       Cookies.set("Authorization", `Token ${data.key}`);
       setPage("chats");
    };
@@ -88,7 +109,7 @@ function LogInForm({ setPage }) {
                         type="text"
                         placeholder="Username"
                         name="username"
-                        value={state.username}
+                        value={user.username}
                         onChange={handleInput}
                      />
                   </div>
@@ -99,6 +120,9 @@ function LogInForm({ setPage }) {
                         className="w-100 form-control"
                         type="password"
                         placeholder="password"
+                        name="password"
+                        value={user.password}
+                        onChange={handleInput}
                      />
                   </div>
 
@@ -107,6 +131,7 @@ function LogInForm({ setPage }) {
                      className="w-100 mb-3"
                      type="submit"
                      id="log-in"
+                     // onClick={handleSubmit}
                      onClick={() => setPage("chats")}
                   >
                      Log In

@@ -23,13 +23,15 @@ function App() {
       
 
 
-         <div className="col-md-12">
-         {page === 'login' && <LogInForm setPage={setPage}/>}
+      <div className="col-md-12">
+            {page === 'login' && <LogInForm setPage={setPage}/>}
 
-         {page === 'register' && <RegistrationForm setPage={setPage}/>}
+            {page === 'register' && <RegistrationForm setPage={setPage}/>}
 
-          {page === 'chats' && <ChatApp setPage={setPage}/>} 
-         </div>
+            {page === 'chats' && <ChatApp setPage={setPage}/>} 
+
+
+      </div>
 
          
    );

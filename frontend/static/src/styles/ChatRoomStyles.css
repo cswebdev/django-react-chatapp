@@ -42,10 +42,38 @@
 .row.g-0.float-start.d-block {
     position: relative;
     width: 290px;
-    background-color: #f1f1f1;
+    background-color: #e5e5e5;
     margin-right: 10px;
     border-radius: 15px 0px 0px 15px;
 }
+
+
+#menu-container {
+    position: absolute;
+    bottom: 0;
+}
+
+ul {
+    list-style: none;
+    margin: auto;
+}
+
+ul>li {
+    padding: 10px;
+}
+
+ul>li>button {
+    width: 80%;
+}
+
+li>.text-center.p-4
+.text-center.p-4>Button {
+    margin:1px;
+}
+/* #delete-btn {
+    padding-right: 1px;
+} */
+
 
 i {
     margin-top: 10px;
@@ -118,7 +146,7 @@ hr {
 .chat-bubble {
     padding: 10px 14px;
     background: #eee;
-    margin: 10px 30px;
+    margin: 20px 30px;
     border-radius: 9px;
     position: relative;
     animation: fadeIn 1s ease-in;

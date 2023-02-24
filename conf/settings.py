@@ -56,9 +56,6 @@ INSTALLED_APPS = [
     'chats.apps.ChatsConfig',
     'accounts.apps.AccountsConfig',
     'frontend.apps.FrontendConfig',    
-    
-    
-    
 ]
 
 #this locks down the api that denys non authenticated users from certain requests
@@ -75,9 +72,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     #Manages sessions across requests
@@ -89,10 +83,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-
-
-
 
 ROOT_URLCONF = 'conf.urls'
 

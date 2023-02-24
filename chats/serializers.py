@@ -6,5 +6,5 @@ from .models import Chat
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
-        fields = ('id','author', 'message',)
+        fields = '__all__'
 

@@ -1,7 +1,10 @@
 import "../styles/ChatRoomStyles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
-function ChatApp() {
+import Accordion from "react-bootstrap/Accordion";
+import "../App.js";
+
+function ChatApp({ setPage }) {
    // Brain blast of an idea!
    // this will be the overall container for the chatroom
    //individudal chats will another js file, and like used like js handlebars.
@@ -12,19 +15,30 @@ function ChatApp() {
    //div.row.no-gutters(g-0) > div.chat-bubble!
    return (
       <div className="container d-flex" id="chat-room-container">
+         {/* Left panel  */}
          <div className="row g-0 float-start d-block">
-
             {/* <input className="form-control" id="room-create"></input> */}
             {/* left panel heading */}
             <div className="col-12">
-               <div className="settings-tray">
-                  <img
-                     src="https://source.unsplash.com/random/80x80/?face-closeup"
-                     id="personal-img"
-                     className="rounded-circle"
-                     alt="50x50"
-                  />
-                  <div>Username`${}`</div>
+               <div className="settings-tray p-0 m-0">
+                  <Accordion>
+                     <Accordion.Item eventKey="0">
+                        <Accordion.Header>
+                           <img
+                              src="https://source.unsplash.com/random/50x50/?face-closeup"
+                              id="personal-img"
+                              className="rounded-circle p-1"
+                              alt="50x50"
+                           />
+                           <div>Username`${}`</div>
+                        </Accordion.Header>
+                        <Accordion.Body className="align-content-center">
+                           <Button className="m-0" variant="outline-danger">
+                              Log Out
+                           </Button>
+                        </Accordion.Body>
+                     </Accordion.Item>
+                  </Accordion>
                </div>
             </div>
             {/* left panel heading end */}
@@ -40,6 +54,46 @@ function ChatApp() {
                <div className="text border-bottom">
                   <div className="h6">Room Name`${}`</div>
                </div>
+            </div>
+            <div id="menu-container">
+               <Accordion>
+                  <Accordion.Item eventKey="0">
+                     <Accordion.Header>Room Edit</Accordion.Header>
+                     <Accordion.Body className="d-block align-content-center p-0 ">
+                        <ul className="m-0 p-0">
+                           <li>
+                              <h6 className="text-center text-muted mt-0 mb-0">
+                                 Create Room
+                              </h6>
+                              <form className="align-items-center">
+                                 <label htmlFor="room-name"></label>
+                                 <input
+                                    className="form-control"
+                                    placeholder="Room Name"
+                                 ></input>
+                              </form>
+                           </li>
+                           <li className="text-center p-4">
+                              {" "}
+                              <Button
+                                 className="d-inline-block w-50"
+                                 id="delete-btn"
+                                 variant="outline-danger"
+                              >
+                                 {" "}
+                                 Delete
+                              </Button>
+                              <Button
+                                 className="d-inline-block w-50"
+                                 variant="outline-success"
+                              >
+                                 Save
+                              </Button>{" "}
+                           </li>
+                        </ul>
+                     </Accordion.Body>
+                  </Accordion.Item>
+               </Accordion>
             </div>
          </div>
          {/* right panel */}

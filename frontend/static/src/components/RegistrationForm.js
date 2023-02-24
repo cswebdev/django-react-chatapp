@@ -5,22 +5,30 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import "../App.js";
 
-const INITAL_REGISTRATION_STATE = {
-   username: "",
-   password1: "",
-   password2: "",
-   email: "",
-};
+// const INITAL_REGISTRATION_STATE = {
+//    username: "",
+//    password1: "",
+//    password2: "",
+//    email: "",
+// };
 
-function RegistrationForm({ setAuth, setPage }) {
-   const [state, setState] = useState(INITAL_REGISTRATION_STATE);
+function RegistrationForm({ setAuth, setPage, ...props }) {
+   const [user, setUser] = useState({
+      username: "",
+      password1: "",
+      password2: "",
+      email: "",
+   });
+   // const [state, setState] = useState(INITAL_REGISTRATION_STATE);
 
-   const handleInput = (e) => {
-      const { name, value } = e.target;
+   const [err, setError] = useState(null);
 
-      setState((prevState) => ({
+   const handleInput = (event) => {
+      const { name, value } = event.target;
+
+      setUser((prevState) => ({
          ...prevState,
-         [name]: value,
+         [name]: value.trim(),
       }));
    };
 
@@ -28,22 +36,27 @@ function RegistrationForm({ setAuth, setPage }) {
       console.warn.log(err);
    };
 
-   const handleSubmit = async (e) => {
-      e.preventDefault();
-
+   const handleSubmit = async (event) => {
+      event.preventDefault();
       console.log(handleSubmit);
       const options = {
          method: "POST",
          headers: {
-            "content-Type": "application/json",
+            "Content-Type": "application/json",
             "X-CSRFToken": Cookies.get("csrftoken"),
          },
-         body: JSON.stringify(state),
+         body: JSON.stringify(user),
       };
 
-      const response = await fetch("/dj-rest-auth/login/", options).catch(
-         handleError
-      );
+      if (user.password1 !== user.password2) {
+         setError("passwords do not match");
+         return;
+      }
+
+      const response = await fetch(
+         "/dj-rest-auth/registration/",
+         options
+      ).catch(handleError);
       if (!response.ok) {
          throw new Error(
             "Network is im not okay im not okayyyyy you wear me out"
@@ -60,12 +73,12 @@ function RegistrationForm({ setAuth, setPage }) {
             <div className="row justify-content-center">
                <div className="col-12 col-md-8 w-100 mt-4 mb-3">
                   <div className="row">
-                     <div className="col text-center">
+                     <div className="text-center">
                         <h1>Register</h1>
                      </div>
                   </div>
                   <div className="row align-items-center">
-                     <div className="col-12 w-100 mb-3">
+                     <div className="col-12 w-100 mb-1">
                         <label htmlFor="username"></label>
                         <input
                            className="w-100 form-control"
@@ -73,13 +86,13 @@ function RegistrationForm({ setAuth, setPage }) {
                            name="username"
                            type="text"
                            placeholder="Username"
-                           value={state.username}
+                           value={user.username}
                            onChange={handleInput}
                         />
                      </div>
                   </div>
                   <div className="row align-items-center">
-                     <div className="col-12 w-100 mb-3">
+                     <div className="col-12 w-100 mb-1">
                         <label htmlFor="email"></label>
                         <input
                            id="email"
@@ -87,7 +100,7 @@ function RegistrationForm({ setAuth, setPage }) {
                            className="form-control"
                            type="email"
                            placeholder="Email"
-                           value={state.email}
+                           value={user.email}
                            onChange={handleInput}
                         />
                      </div>
@@ -101,7 +114,7 @@ function RegistrationForm({ setAuth, setPage }) {
                            className="form-control"
                            type="password"
                            placeholder="Password"
-                           value={state.password1}
+                           value={user.password1}
                            onChange={handleInput}
                         />
                      </div>
@@ -113,21 +126,23 @@ function RegistrationForm({ setAuth, setPage }) {
                            type="password"
                            className="form-control"
                            placeholder="Confirm Password"
-                           value={state.password2}
+                           value={user.password2}
                            onChange={handleInput}
                         />
                      </div>
                   </div>
-                  <div className="row justify-content-start mb-4">
+                  <div>{err}</div>
+                  <div className="row justify-content-start mt-4">
                      <div className="col">
                         <Button
                            className="btn btn-primary w-100"
                            type="submit"
                            variant="primary"
+                           // onClick={() => {handleSubmit}}
                         >
                            Submit
                         </Button>
-                        <p className="text-center mt-3 mb-4">
+                        <p className="text-center mt-3">
                            <button
                               type="button"
                               onClick={() => setPage("login")}
