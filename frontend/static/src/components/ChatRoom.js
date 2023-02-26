@@ -2,17 +2,88 @@ import "../styles/ChatRoomStyles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
+import Cookies from "js-cookie";
 import "../App.js";
+import { useState } from "react";
 
-function ChatApp({ setPage }) {
-   // Brain blast of an idea!
-   // this will be the overall container for the chatroom
-   //individudal chats will another js file, and like used like js handlebars.
+import RoomList from "./RoomList";
+
+function ChatApp({ setPage, roomsHTML }) {
+   const [rooms, setRooms] = useState([]);
+
+   const handleError = (err) => {
+      console.warn.log(err);
+   };
 
    //similar to this idea:
    //https://codepen.io/dagalti/pen/NQPmaG
    //each chat is their own row!
    //div.row.no-gutters(g-0) > div.chat-bubble!
+
+   // *********** Log Out Section ***********//
+   const handleLogout = async () => {
+      const response = await fetch("/dj-rest-auth/logout/", {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": Cookies.get("csrftoken"),
+         },
+         body: "",
+      });
+      const data = await response.json();
+      Cookies.remove("Authorization", `Token ${data.key}`);
+      setPage("login");
+   };
+
+   const handleSubmit = async (event) => {
+      event.preventDefault();
+   };
+
+   //*********** END LOG OUT SECTION *********** //
+
+   // *********** Chat Room Creation *********** //
+
+   // const inputRoomName = (event) => {
+   //    setRoomName(event.target.value);
+   // };
+
+   const handleRoomInput = async (e) => {
+      const { name, value } = e.target;
+      setRooms((prevState) => ({
+         ...prevState,
+         [name]: value,
+      }));
+   };
+
+   const handleRoomSubmit = async (e) => {
+      e.preventDefault();
+
+      const options = {
+         method: "POST",
+         headers: {
+            "content-Type": "application/json",
+            "X-CSRFToken": Cookies.get("csrftoken"),
+         },
+         body: JSON.stringify({
+            rooms: rooms.name,
+         }),
+      };
+
+      const response = await fetch("/api_v1/chats/chatrooms/", options).catch(
+         handleError
+      );
+      if (!response.ok) {
+         throw new Error("Network Response was not OK");
+      }
+   };
+
+   // const handleDeleteRoom = () => {
+   //    //insert logic to delete index from room []
+   //    console.log("delete room");
+   // };
+
+   //********** End Section ****************/
+
    return (
       <div className="container d-flex" id="chat-room-container">
          {/* Left panel  */}
@@ -25,15 +96,20 @@ function ChatApp({ setPage }) {
                      <Accordion.Item eventKey="0">
                         <Accordion.Header>
                            <img
-                              src="https://source.unsplash.com/random/50x50/?face-closeup"
+                              src="https://source.unsplash.com/random/70x70/?face-closeup"
                               id="personal-img"
-                              className="rounded-circle p-1"
-                              alt="50x50"
+                              className="rounded-circle pe-2"
+                              alt="80x80"
                            />
-                           <div>Username`${}`</div>
+                           <div> username:`${}`</div>
                         </Accordion.Header>
-                        <Accordion.Body className="align-content-center">
-                           <Button className="m-0" variant="outline-danger">
+                        <Accordion.Body className="d-flex justify-content-center">
+                           <Button
+                              className="m-0"
+                              variant="outline-danger"
+                              type="button"
+                              onClick={handleLogout}
+                           >
                               Log Out
                            </Button>
                         </Accordion.Body>
@@ -41,19 +117,12 @@ function ChatApp({ setPage }) {
                   </Accordion>
                </div>
             </div>
+
             {/* left panel heading end */}
             {/* in this room drawer use room list like handlebars js and plug in room names */}
             <div className="room-drawer">
+               <RoomList />
                {/* <img> you could put an  */}
-               <div className="text border-bottom">
-                  <div className="h6">Room Name`${}`</div>
-               </div>
-               <div className="text border-bottom">
-                  <div className="h6">Room Name`${}`</div>
-               </div>
-               <div className="text border-bottom">
-                  <div className="h6">Room Name`${}`</div>
-               </div>
             </div>
             <div id="menu-container">
                <Accordion>
@@ -65,20 +134,28 @@ function ChatApp({ setPage }) {
                               <h6 className="text-center text-muted mt-0 mb-0">
                                  Create Room
                               </h6>
-                              <form className="align-items-center">
+                              <form
+                                 onSubmit={handleRoomSubmit}
+                                 className="align-items-center"
+                              >
                                  <label htmlFor="room-name"></label>
                                  <input
+                                    type="text"
+                                    name="room-name"
                                     className="form-control"
                                     placeholder="Room Name"
+                                    value={rooms.name}
+                                    onChange={handleRoomInput}
                                  ></input>
                               </form>
                            </li>
-                           <li className="text-center p-4">
+                           <li className="d-flex justify-content-evenly">
                               {" "}
                               <Button
                                  className="d-inline-block w-50"
                                  id="delete-btn"
                                  variant="outline-danger"
+                                 // onClick={handleDeleteRoom}
                               >
                                  {" "}
                                  Delete
@@ -86,6 +163,8 @@ function ChatApp({ setPage }) {
                               <Button
                                  className="d-inline-block w-50"
                                  variant="outline-success"
+                                 type="submit"
+                                 // onClick={handleSaveRoom}
                               >
                                  Save
                               </Button>{" "}

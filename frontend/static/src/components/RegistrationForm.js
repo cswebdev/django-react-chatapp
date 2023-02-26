@@ -12,7 +12,7 @@ import "../App.js";
 //    email: "",
 // };
 
-function RegistrationForm({ setAuth, setPage, ...props }) {
+function RegistrationForm({ setAuth, setPage }) {
    const [user, setUser] = useState({
       username: "",
       password1: "",
@@ -38,7 +38,6 @@ function RegistrationForm({ setAuth, setPage, ...props }) {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
-      console.log(handleSubmit);
       const options = {
          method: "POST",
          headers: {
@@ -57,6 +56,11 @@ function RegistrationForm({ setAuth, setPage, ...props }) {
          "/dj-rest-auth/registration/",
          options
       ).catch(handleError);
+
+      if (response.ok) {
+         setPage("login");
+      }
+
       if (!response.ok) {
          throw new Error(
             "Network is im not okay im not okayyyyy you wear me out"
@@ -65,6 +69,7 @@ function RegistrationForm({ setAuth, setPage, ...props }) {
       const data = await response.json();
       Cookies.set("Authorization", `Token ${data.key}`);
       setAuth(true);
+      setPage("login");
    };
 
    return (

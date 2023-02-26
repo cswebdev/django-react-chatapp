@@ -3,10 +3,9 @@
 
 from  rest_framework import generics
 from  django.urls import path
-from .models import Chat
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
-from .serializers import ChatSerializer
+from .models import Chat, ChatRoom
+from .serializers import ChatSerializer, ChatRoomSerializer
+# from rest_framework.permissions import IsAuthenticatedOrReadOnly
 # Create your views here.
 
 class ChatListAPIView(generics.ListAPIView):
@@ -17,8 +16,10 @@ class ChatDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
 
-
-# class ChatListView(ListView):
-#     model = Chat
+class ChatRoomListAPIView(generics.ListCreateAPIView):
+    queryset = ChatRoom.objects.all()   
+    serializer_class = ChatRoomSerializer
     
-
+class ChatRoomDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ChatRoom.objects.all()   
+    serializer_class = ChatRoomSerializer

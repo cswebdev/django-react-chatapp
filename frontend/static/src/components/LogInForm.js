@@ -15,8 +15,6 @@ import "../App.js";
 //props can't be wrapped in {}. LoginForm(props) was changed to LoginForm({ setAuth }),
 
 function LogInForm({ setPage, ...props }) {
-   // const [state, setState] = useState(INITIAL_STATE);
-
    const [user, setUser] = useState({
       username: "",
       password: "",
@@ -42,7 +40,7 @@ function LogInForm({ setPage, ...props }) {
          method: "POST",
          headers: {
             "content-Type": "application/json",
-            "X-CSRFToken": Cookies.get("crsftoken"),
+            "X-CSRFToken": Cookies.get("csrftoken"),
          },
          body: JSON.stringify({
             username: user.username,
@@ -56,17 +54,6 @@ function LogInForm({ setPage, ...props }) {
       const response = await fetch("/dj-rest-auth/login/", options).catch(
          handleError
       );
-
-      if (response.status === 404) {
-         alert("User not found. Please register.");
-         setPage("register");
-         return;
-      }
-
-      if (response.status === 401) {
-         alert("Invalid credentials. Please try again.");
-         return;
-      }
 
       if (!response.ok) {
          throw new Error("Network Response was not OK");
@@ -107,7 +94,7 @@ function LogInForm({ setPage, ...props }) {
                      <input
                         className="w-100 form-control"
                         type="text"
-                        placeholder="Username"
+                        placeholder="username"
                         name="username"
                         value={user.username}
                         onChange={handleInput}
@@ -131,8 +118,8 @@ function LogInForm({ setPage, ...props }) {
                      className="w-100 mb-3"
                      type="submit"
                      id="log-in"
-                     // onClick={handleSubmit}
-                     onClick={() => setPage("chats")}
+                     onClick={handleSubmit}
+                     // onClick={() => setPage("chats")}
                   >
                      Log In
                   </Button>

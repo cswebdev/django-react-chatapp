@@ -66,10 +66,10 @@ ul>li>button {
     width: 80%;
 }
 
-li>.text-center.p-4
-.text-center.p-4>Button {
-    margin:1px;
+li>.text-center.p-4 .text-center.p-4>Button {
+    margin: 1px;
 }
+
 /* #delete-btn {
     padding-right: 1px;
 } */
@@ -223,3 +223,6 @@ i {
 i:last-of-type {
     margin-left: 25px;
 }
+
+
+
