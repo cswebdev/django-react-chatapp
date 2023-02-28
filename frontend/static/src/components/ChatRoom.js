@@ -7,18 +7,17 @@ import "../App.js";
 import { useState } from "react";
 
 import RoomList from "./RoomList";
+import Message from "./Message";
 
-function ChatApp({ setPage, roomsHTML }) {
-   const [rooms, setRooms] = useState([]);
+function ChatApp({ setPage }) {
+   const [rooms, setRooms] = useState({});
+   const [activeRoom, setActiveRoom] = useState(1);
+   const [roomId, setRoomId] = useState(null);
+   const [messages, setMessages] = useState({ name: "" });
 
    const handleError = (err) => {
       console.warn.log(err);
    };
-
-   //similar to this idea:
-   //https://codepen.io/dagalti/pen/NQPmaG
-   //each chat is their own row!
-   //div.row.no-gutters(g-0) > div.chat-bubble!
 
    // *********** Log Out Section ***********//
    const handleLogout = async () => {
@@ -43,51 +42,80 @@ function ChatApp({ setPage, roomsHTML }) {
 
    // *********** Chat Room Creation *********** //
 
-   // const inputRoomName = (event) => {
-   //    setRoomName(event.target.value);
-   // };
-
    const handleRoomInput = async (e) => {
       const { name, value } = e.target;
       setRooms((prevState) => ({
          ...prevState,
-         [name]: value,
+         name: value.trim(),
       }));
    };
 
    const handleRoomSubmit = async (e) => {
-      e.preventDefault();
-
       const options = {
          method: "POST",
          headers: {
-            "content-Type": "application/json",
+            "Content-Type": "application/json",
             "X-CSRFToken": Cookies.get("csrftoken"),
          },
-         body: JSON.stringify({
-            rooms: rooms.name,
-         }),
+         body: JSON.stringify({ name: rooms.name }),
       };
 
       const response = await fetch("/api_v1/chats/chatrooms/", options).catch(
          handleError
       );
+      if (response.ok) {
+         console.log("response okay");
+      }
       if (!response.ok) {
          throw new Error("Network Response was not OK");
       }
+      const data = await response.json();
    };
 
-   // const handleDeleteRoom = () => {
-   //    //insert logic to delete index from room []
-   //    console.log("delete room");
-   // };
-
    //********** End Section ****************/
+
+   // *
+   // *
+   // *
+
+   //********** Chat Text Section ***************/
+
+   const handleTextInput = (e) => {
+      const { name, value } = e.target;
+      setMessages((prevState) => ({
+         ...prevState,
+         [name]: value.trim(),
+      }));
+   };
+
+   const handleTextSubmit = async (e) => {
+      e.preventDefault();
+      const options = {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": Cookies.get("csrftoken"),
+         },
+         body: JSON.stringify({ name: messages.name }),
+      };
+
+      const response = await fetch("/api_v1/chats/", options).catch(
+         handleError
+      );
+      if (response.ok) {
+         const data = await response.json();
+         setMessages([...messages, data]);
+      } else {
+         throw new Error("Network response was not OK");
+      }
+   };
+
+   //********************************************* */
 
    return (
       <div className="container d-flex" id="chat-room-container">
          {/* Left panel  */}
-         <div className="row g-0 float-start d-block">
+         <div className="row g-0 float-start d-block bg-light bg-opacity-50">
             {/* <input className="form-control" id="room-create"></input> */}
             {/* left panel heading */}
             <div className="col-12">
@@ -124,92 +152,101 @@ function ChatApp({ setPage, roomsHTML }) {
                <RoomList />
                {/* <img> you could put an  */}
             </div>
-            <div id="menu-container">
-               <Accordion>
-                  <Accordion.Item eventKey="0">
-                     <Accordion.Header>Room Edit</Accordion.Header>
-                     <Accordion.Body className="d-block align-content-center p-0 ">
-                        <ul className="m-0 p-0">
-                           <li>
-                              <h6 className="text-center text-muted mt-0 mb-0">
-                                 Create Room
-                              </h6>
-                              <form
-                                 onSubmit={handleRoomSubmit}
-                                 className="align-items-center"
-                              >
-                                 <label htmlFor="room-name"></label>
-                                 <input
-                                    type="text"
-                                    name="room-name"
-                                    className="form-control"
-                                    placeholder="Room Name"
-                                    value={rooms.name}
-                                    onChange={handleRoomInput}
-                                 ></input>
-                              </form>
-                           </li>
-                           <li className="d-flex justify-content-evenly">
+            <Accordion id="accord-room">
+               <Accordion.Item eventKey="0">
+                  <Accordion.Header>Room Menu</Accordion.Header>
+                  <Accordion.Body className="d-block align-content-center p-0 ">
+                     <ul className="m-0 p-0">
+                        <li>
+                           <h6 className="text-center text-muted mt-0 mb-0">
+                              Create Room
+                           </h6>
+                           <form
+                              onSubmit={handleRoomSubmit}
+                              className="align-items-center"
+                           >
+                              <label htmlFor="room-name"></label>
+                              <input
+                                 type="text"
+                                 name="room-name"
+                                 className="form-control"
+                                 placeholder="Room Name"
+                                 value={rooms.name}
+                                 onChange={handleRoomInput}
+                              ></input>
+                           </form>
+                        </li>
+                        <li className="d-flex justify-content-evenly">
+                           {" "}
+                           <Button
+                              className="d-inline-block w-50"
+                              id="delete-btn"
+                              variant="outline-danger"
+                              // onClick={handleDeleteRoom}
+                           >
                               {" "}
-                              <Button
-                                 className="d-inline-block w-50"
-                                 id="delete-btn"
-                                 variant="outline-danger"
-                                 // onClick={handleDeleteRoom}
-                              >
-                                 {" "}
-                                 Delete
-                              </Button>
-                              <Button
-                                 className="d-inline-block w-50"
-                                 variant="outline-success"
-                                 type="submit"
-                                 // onClick={handleSaveRoom}
-                              >
-                                 Save
-                              </Button>{" "}
-                           </li>
-                        </ul>
-                     </Accordion.Body>
-                  </Accordion.Item>
-               </Accordion>
-            </div>
+                              Delete
+                           </Button>
+                           <Button
+                              className="d-inline-block w-50"
+                              variant="outline-success"
+                              type="submit"
+                              onClick={handleRoomSubmit}
+                           >
+                              Save
+                           </Button>
+                        </li>
+                     </ul>
+                  </Accordion.Body>
+               </Accordion.Item>
+            </Accordion>
+            <div id="menu-container"></div>
          </div>
          {/* right panel */}
          <div className="row g-0  w-100 " id="right-side-panel-header">
             <div className="col-md-8 w-100">
                {/* chat container */}
                <div className="chat-panel">
+                  {/* * */}
+                  {/* chat bubbles */}
+                  {/* float left - other ppls chats */}*{" "}
                   <div className="row g-0">
-                     <div className="col-md-3">
-                        {/* float left - other ppls chats */}
+                     <Message />
+                     {/* <div className="col-md-3">
                         <div className="chat-bubble float-md-start  bg-secondary">
                            Hola!
                         </div>
-                     </div>
-                     {/* personal chat */}
-                     <div className="row g-0">
+                     </div> */}
+                     *{/* personal chat */}
+                     {/* <div className="row g-0">
                         <div className="col-md-3 float-md-end offset-md-9">
                            <div className="chat-bubble float-md-end bg-primary">
                               Wrong number!
                            </div>
                         </div>
-                     </div>
+                     </div> */}
                   </div>
+                  {/* * */}
                   <div className="button-tray d-inline-flex w-100">
-                     <input
-                        className="form-control me-1 "
-                        placeholder="enter message here"
-                        type="text"
-                        id="chat-input"
-                     />
-                     <Button
-                        type="button"
-                        variant="outline-primary"
-                        className="me-1 p-3"
-                     >
-                        send
-                     </Button>{" "}
+                     <form onSubmit={handleTextSubmit}>
+                        <label htmlFor="message-input"></label>
+                        <input
+                           type="text"
+                           name="message-input"
+                           className="form-control me-1"
+                           placeholder="enter message here"
+                           value={messages.name}
+                           onChange={handleTextInput}
+                        />
+                        <Button
+                           type="submit"
+                           variant="outline-primary"
+                           className="me-1 p-3"
+                           onClick={handleTextSubmit}
+                        >
+                           send
+                        </Button>
+                     </form>
                   </div>
                </div>
             </div>

@@ -8,9 +8,14 @@ from .serializers import ChatSerializer, ChatRoomSerializer
 # from rest_framework.permissions import IsAuthenticatedOrReadOnly
 # Create your views here.
 
-class ChatListAPIView(generics.ListAPIView):
+class ChatListAPIView(generics.ListCreateAPIView):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+       
+        # self.request=user
 
 class ChatDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Chat.objects.all()

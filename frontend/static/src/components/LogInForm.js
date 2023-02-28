@@ -126,7 +126,7 @@ function LogInForm({ setPage, ...props }) {
 
                   {/* onclick event here is all that is needed. No need to call a seperate onclick event like in vanilla js */}
                   <p className="text-center">
-                     Need an account?<p></p>
+                     Need an account?<br></br>
                      <button
                         type="button"
                         onClick={() => setPage("register")}

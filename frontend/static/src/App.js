@@ -6,34 +6,18 @@ import RegistrationForm from "./components/RegistrationForm";
 import ChatApp from "./components/ChatRoom";
 import { useState } from "react";
 
-
-
-
-
-
 function App() {
-
-   const [page, setPage] = useState('login');
- 
-  
-  
-  
+   const [page, setPage] = useState("login");
+   // const [page, setPage] = useState("chats");
 
    return (
-      
-
-
       <div className="col-md-12">
-            {page === 'login' && <LogInForm setPage={setPage}/>}
+         {page === "login" && <LogInForm setPage={setPage} />}
 
-            {page === 'register' && <RegistrationForm setPage={setPage}/>}
+         {page === "register" && <RegistrationForm setPage={setPage} />}
 
-            {page === 'chats' && <ChatApp setPage={setPage}/>} 
-
-
+         {page === "chats" && <ChatApp setPage={setPage} />}
       </div>
-
-         
    );
 }
 
