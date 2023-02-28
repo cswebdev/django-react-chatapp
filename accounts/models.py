@@ -1,8 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 #this crates a model named user. It is inheriting default abstract user model. User model can be updated or changed later 
+
+
 
 class Profile(models.Model):
     user = models.OneToOneField(

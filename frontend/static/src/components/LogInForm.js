@@ -2,7 +2,7 @@
 // import "./styles/App.css";
 import "../styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 import Button from "react-bootstrap/Button";
 import "../App.js";
@@ -63,23 +63,6 @@ function LogInForm({ setPage, ...props }) {
       Cookies.set("Authorization", `Token ${data.key}`);
       setPage("chats");
    };
-
-   //clickable link event listnener to send user to RegistrstionForm
-   //*no workie*
-   //frustration imprissiong me all I can see is absolute horror
-
-   // useEffect(() => {
-   //    const registrationLink = document.getElementById("registration-link");
-   //    registrationLink.addEventListener("click", function (event) {
-   //       event.preventDefault();
-   //       alert("click")
-
-   //    });
-   // }, );
-
-   //
-   //
-   // FUDGING FUDGE
 
    return (
       <div className="container" id="log-in-container">

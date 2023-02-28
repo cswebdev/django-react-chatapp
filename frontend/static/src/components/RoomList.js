@@ -10,7 +10,7 @@ function RoomList() {
 
    useEffect(() => {
       const getRooms = async () => {
-         const response = await fetch("/api_v1/chats/chatrooms");
+         const response = await fetch("/api_v1/chatrooms");
          if (!response.ok) {
             throw new Error("Network response not ok");
          }

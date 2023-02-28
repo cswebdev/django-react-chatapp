@@ -13,7 +13,11 @@ function ChatApp({ setPage }) {
    const [rooms, setRooms] = useState({});
    const [activeRoom, setActiveRoom] = useState(1);
    const [roomId, setRoomId] = useState(null);
-   const [messages, setMessages] = useState({ name: "" });
+   const [messages, setMessages] = useState([]);
+   const [text, setText] = useState("");
+
+   // **************************
+   // make an API call to retrieve the user's profile data
 
    const handleError = (err) => {
       console.warn.log(err);
@@ -80,14 +84,6 @@ function ChatApp({ setPage }) {
 
    //********** Chat Text Section ***************/
 
-   const handleTextInput = (e) => {
-      const { name, value } = e.target;
-      setMessages((prevState) => ({
-         ...prevState,
-         [name]: value.trim(),
-      }));
-   };
-
    const handleTextSubmit = async (e) => {
       e.preventDefault();
       const options = {
@@ -96,18 +92,22 @@ function ChatApp({ setPage }) {
             "Content-Type": "application/json",
             "X-CSRFToken": Cookies.get("csrftoken"),
          },
-         body: JSON.stringify({ name: messages.name }),
+         body: JSON.stringify({
+            message: text,
+         }),
       };
 
       const response = await fetch("/api_v1/chats/", options).catch(
          handleError
       );
-      if (response.ok) {
-         const data = await response.json();
-         setMessages([...messages, data]);
-      } else {
+      if (!response.ok) {
          throw new Error("Network response was not OK");
       }
+
+      const data = await response.json();
+      console.log({ data });
+      setMessages([...messages, data]);
+      setText("");
    };
 
    //********************************************* */
@@ -129,7 +129,7 @@ function ChatApp({ setPage }) {
                               className="rounded-circle pe-2"
                               alt="80x80"
                            />
-                           <div> username:`${}`</div>
+                           <h6>username</h6>
                         </Accordion.Header>
                         <Accordion.Body className="d-flex justify-content-center">
                            <Button
@@ -177,14 +177,12 @@ function ChatApp({ setPage }) {
                            </form>
                         </li>
                         <li className="d-flex justify-content-evenly">
-                           {" "}
                            <Button
                               className="d-inline-block w-50"
                               id="delete-btn"
                               variant="outline-danger"
                               // onClick={handleDeleteRoom}
                            >
-                              {" "}
                               Delete
                            </Button>
                            <Button
@@ -209,15 +207,15 @@ function ChatApp({ setPage }) {
                <div className="chat-panel">
                   {/* * */}
                   {/* chat bubbles */}
-                  {/* float left - other ppls chats */}*{" "}
+                  {/* float left - other ppls chats */}
                   <div className="row g-0">
-                     <Message />
+                     <Message messages={messages} />
                      {/* <div className="col-md-3">
                         <div className="chat-bubble float-md-start  bg-secondary">
                            Hola!
                         </div>
                      </div> */}
-                     *{/* personal chat */}
+                     {/* personal chat */}
                      {/* <div className="row g-0">
                         <div className="col-md-3 float-md-end offset-md-9">
                            <div className="chat-bubble float-md-end bg-primary">
@@ -229,20 +227,19 @@ function ChatApp({ setPage }) {
                   {/* * */}
                   <div className="button-tray d-inline-flex w-100">
                      <form onSubmit={handleTextSubmit}>
-                        <label htmlFor="message-input"></label>
+                        <label htmlFor="message"></label>
                         <input
                            type="text"
-                           name="message-input"
+                           name="message"
                            className="form-control me-1"
                            placeholder="enter message here"
-                           value={messages.name}
-                           onChange={handleTextInput}
+                           value={text}
+                           onChange={(e) => setText(e.target.value)}
                         />
                         <Button
                            type="submit"
                            variant="outline-primary"
                            className="me-1 p-3"
-                           onClick={handleTextSubmit}
                         >
                            send
                         </Button>
