@@ -4,6 +4,7 @@ from .models import Chat, ChatRoom
 # from .models import User
 
 class ChatSerializer(serializers.ModelSerializer):
+    author_name = serializers.ReadOnlyField(source="author.username")
     class Meta:
         model = Chat
         fields = '__all__'

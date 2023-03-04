@@ -4,26 +4,22 @@ import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import Cookies from "js-cookie";
 import "../App.js";
-import { useState } from "react";
-
-import RoomList from "./RoomList";
-import Message from "./Message";
+import { useState, useEffect } from "react";
+import Rooms from "./Rooms";
+import Messages from "./Messages";
 
 function ChatApp({ setPage }) {
    const [rooms, setRooms] = useState({});
-   const [activeRoom, setActiveRoom] = useState(1);
-   const [roomId, setRoomId] = useState(null);
    const [messages, setMessages] = useState([]);
    const [text, setText] = useState("");
-
-   // **************************
-   // make an API call to retrieve the user's profile data
+   const [activeRoomID, setActiveRoomID] = useState(1);
+   const [activeUser, setActiveUser] = useState({});
 
    const handleError = (err) => {
       console.warn.log(err);
    };
 
-   // *********** Log Out Section ***********//
+   // *** Log Out Section *** //
    const handleLogout = async () => {
       const response = await fetch("/dj-rest-auth/logout/", {
          method: "POST",
@@ -38,22 +34,15 @@ function ChatApp({ setPage }) {
       setPage("login");
    };
 
-   const handleSubmit = async (event) => {
-      event.preventDefault();
-   };
-
-   //*********** END LOG OUT SECTION *********** //
-
-   // *********** Chat Room Creation *********** //
-
    const handleRoomInput = async (e) => {
       const { name, value } = e.target;
       setRooms((prevState) => ({
          ...prevState,
-         name: value.trim(),
+         [name]: value.trim(),
       }));
    };
 
+   // *** Create Room *** //
    const handleRoomSubmit = async (e) => {
       const options = {
          method: "POST",
@@ -64,26 +53,19 @@ function ChatApp({ setPage }) {
          body: JSON.stringify({ name: rooms.name }),
       };
 
-      const response = await fetch("/api_v1/chats/chatrooms/", options).catch(
+      const response = await fetch(`/api_v1/chats/chatrooms/`, options).catch(
          handleError
       );
-      if (response.ok) {
-         console.log("response okay");
-      }
+
       if (!response.ok) {
          throw new Error("Network Response was not OK");
       }
       const data = await response.json();
+      //needs to write code for room submit
+      setRooms({});
    };
 
-   //********** End Section ****************/
-
-   // *
-   // *
-   // *
-
-   //********** Chat Text Section ***************/
-
+   //*** Create A Message ***/
    const handleTextSubmit = async (e) => {
       e.preventDefault();
       const options = {
@@ -94,23 +76,35 @@ function ChatApp({ setPage }) {
          },
          body: JSON.stringify({
             message: text,
+            room: activeRoomID,
          }),
       };
 
-      const response = await fetch("/api_v1/chats/", options).catch(
-         handleError
-      );
+      const response = await fetch(
+         `/api_v1/chats/${activeRoomID}`,
+         options
+      ).catch(handleError);
+
       if (!response.ok) {
          throw new Error("Network response was not OK");
       }
-
-      const data = await response.json();
-      console.log({ data });
-      setMessages([...messages, data]);
       setText("");
    };
 
-   //********************************************* */
+   //******** username fetch ******** */
+   useEffect(() => {
+      const getActiveUser = async () => {
+         const response = await fetch(`/dj-rest-auth/user`);
+         if (!response.ok) {
+            throw new Error("Network response not okay - user not found");
+         }
+         const data = await response.json();
+         console.log(data);
+         setActiveUser(data);
+      };
+      getActiveUser();
+   }, []);
+   console.log("this is", activeUser.username);
 
    return (
       <div className="container d-flex" id="chat-room-container">
@@ -129,7 +123,8 @@ function ChatApp({ setPage }) {
                               className="rounded-circle pe-2"
                               alt="80x80"
                            />
-                           <h6>username</h6>
+
+                           <h6>{activeUser.username}</h6>
                         </Accordion.Header>
                         <Accordion.Body className="d-flex justify-content-center">
                            <Button
@@ -149,7 +144,10 @@ function ChatApp({ setPage }) {
             {/* left panel heading end */}
             {/* in this room drawer use room list like handlebars js and plug in room names */}
             <div className="room-drawer">
-               <RoomList />
+               <Rooms
+                  activeRoomID={activeRoomID}
+                  setActiveRoomID={setActiveRoomID}
+               />
                {/* <img> you could put an  */}
             </div>
             <Accordion id="accord-room">
@@ -201,6 +199,7 @@ function ChatApp({ setPage }) {
             <div id="menu-container"></div>
          </div>
          {/* right panel */}
+         {/* messages go here */}
          <div className="row g-0  w-100 " id="right-side-panel-header">
             <div className="col-md-8 w-100">
                {/* chat container */}
@@ -209,13 +208,16 @@ function ChatApp({ setPage }) {
                   {/* chat bubbles */}
                   {/* float left - other ppls chats */}
                   <div className="row g-0">
-                     <Message messages={messages} />
+                     <Messages
+                        activeRoomID={activeRoomID}
+                        activeUser={activeUser}
+                     />
                      {/* <div className="col-md-3">
                         <div className="chat-bubble float-md-start  bg-secondary">
                            Hola!
                         </div>
                      </div> */}
-                     {/* personal chat */}
+                     {/* Other users */}
                      {/* <div className="row g-0">
                         <div className="col-md-3 float-md-end offset-md-9">
                            <div className="chat-bubble float-md-end bg-primary">
@@ -224,14 +226,17 @@ function ChatApp({ setPage }) {
                         </div>
                      </div> */}
                   </div>
-                  {/* * */}
+
                   <div className="button-tray d-inline-flex w-100">
-                     <form onSubmit={handleTextSubmit}>
+                     <form
+                        onSubmit={handleTextSubmit}
+                        className="w-100 d-inline-flex"
+                     >
                         <label htmlFor="message"></label>
                         <input
                            type="text"
                            name="message"
-                           className="form-control me-1"
+                           className="form-control me-1 "
                            placeholder="enter message here"
                            value={text}
                            onChange={(e) => setText(e.target.value)}
@@ -239,7 +244,7 @@ function ChatApp({ setPage }) {
                         <Button
                            type="submit"
                            variant="outline-primary"
-                           className="me-1 p-3"
+                           className="me-1 p-3 end-0 d-inline "
                         >
                            send
                         </Button>

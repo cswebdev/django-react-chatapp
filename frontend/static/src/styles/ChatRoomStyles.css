@@ -131,7 +131,10 @@
      outline: none;
  }
 
-
+ button#room-btn.active-room {
+     background-color: #0275d8;
+     color: #f7f7f7;
+ }
 
 
  .text {

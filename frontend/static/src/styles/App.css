@@ -112,3 +112,7 @@ button#login-link:hover {
   border-radius: 15px;
   transform: scale(1.1);
 }
+
+.col-md-3:last-child {
+  margin-bottom: 80px;
+}

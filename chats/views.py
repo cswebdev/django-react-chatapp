@@ -9,13 +9,15 @@ from .serializers import ChatSerializer, ChatRoomSerializer
 # Create your views here.
 
 class ChatListAPIView(generics.ListCreateAPIView):
-    queryset = Chat.objects.all()
+    # queryset = Chat.objects.all()
     serializer_class = ChatSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
        
-        # self.request=user
+    def get_queryset(self):
+        return Chat.objects.filter(room_id=self.kwargs['room_id'])
+     
 
 class ChatDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Chat.objects.all()
@@ -28,3 +30,5 @@ class ChatRoomListAPIView(generics.ListCreateAPIView):
 class ChatRoomDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ChatRoom.objects.all()   
     serializer_class = ChatRoomSerializer
+
+    

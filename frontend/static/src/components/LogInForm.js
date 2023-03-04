@@ -1,18 +1,9 @@
-// LogInForm.js
-// import "./styles/App.css";
 import "../styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import Button from "react-bootstrap/Button";
 import "../App.js";
-
-// const INITIAL_STATE = {
-//    username: "",
-//    password: "",
-//    email: "",
-// };
-//props can't be wrapped in {}. LoginForm(props) was changed to LoginForm({ setAuth }),
 
 function LogInForm({ setPage, ...props }) {
    const [user, setUser] = useState({
@@ -102,7 +93,6 @@ function LogInForm({ setPage, ...props }) {
                      type="submit"
                      id="log-in"
                      onClick={handleSubmit}
-                     // onClick={() => setPage("chats")}
                   >
                      Log In
                   </Button>

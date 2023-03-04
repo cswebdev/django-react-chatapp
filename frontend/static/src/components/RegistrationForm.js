@@ -5,13 +5,6 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import "../App.js";
 
-// const INITAL_REGISTRATION_STATE = {
-//    username: "",
-//    password1: "",
-//    password2: "",
-//    email: "",
-// };
-
 function RegistrationForm({ setAuth, setPage }) {
    const [user, setUser] = useState({
       username: "",
@@ -19,7 +12,6 @@ function RegistrationForm({ setAuth, setPage }) {
       password2: "",
       email: "",
    });
-   // const [state, setState] = useState(INITAL_REGISTRATION_STATE);
 
    const [err, setError] = useState(null);
 
