@@ -54,27 +54,32 @@ function Messages({ activeRoomID, activeUser }) {
       if (message.author_name === activeUser.username) {
          return (
             <div className="row g-0" key={message.id}>
-               <div className={`col-md-3 float-md-end offset-md-9`}>
-                  <Accordion id="chat-accordion">
+               <div className="col-md-3 float-md-end offset-md-9">
+                  <Accordion
+                     id="chat-accordion"
+                     flush
+                     className="p-0 bg-transparent"
+                  >
                      <Accordion.Item eventKey="0">
-                        <Accordion.Header>
+                        <Accordion.Header className="p-0 bg-transparent d-flex">
                            <div
                               id="chat-message"
                               key={message.id}
-                              className={`chat-bubble float-md-end bg-primary`}
+                              className="chat-bubble float-md-end bg-primary m-1"
                            >
                               {message.message}
                            </div>{" "}
                            <h6>{message.author_name}</h6>
                         </Accordion.Header>
-                        <AccordionBody className="d-flex justify-content-center">
+                        <AccordionBody className="d-flex justify-content-center p-0">
                            <Button
+                              variant="outline-primary"
                               className="me-1"
                               onClick={() => deleteMessage(message.id)}
                            >
                               <IconTrash />
                            </Button>
-                           <Button className="ms-1">
+                           <Button variant="outline-primary" className="ms-1">
                               <IconPencil />
                            </Button>
                         </AccordionBody>
@@ -82,27 +87,11 @@ function Messages({ activeRoomID, activeUser }) {
                   </Accordion>
                </div>{" "}
             </div>
-
-            // <div className="row g-0" key={message.id}>
-            //    <div className={`col-md-3 float-md-end offset-md-9`}>
-            //       <h6>{message.author_name}</h6>
-            //       <div
-            //          id="chat-message"
-            //          key={message.id}
-            //          className={`chat-bubble float-md-end bg-primary`}
-            //       >
-            //          {message.message}
-            //          <Button onClick={() => deleteMessage(message.id)}>
-            //             <IconTrash />
-            //          </Button>
-            //       </div>
-            //    </div>
-            // </div>
          );
       } else {
          return (
             <div className="row g-0" key={message.id}>
-               <div className="col-md-3">
+               <div className="col-md-3 d-flex">
                   <h6>{message.author_name}</h6>
                   <div className="chat-bubble float-md-start bg-secondary">
                      {message.message}

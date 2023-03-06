@@ -40,12 +40,13 @@ function ChatApp({ setPage }) {
       const { name, value } = e.target;
       setRooms((prevState) => ({
          ...prevState,
-         [name]: value.trim(),
+         [name]: value,
+         name,
       }));
    };
 
    // *** Create Room *** //
-   const handleRoomSubmit = async (e) => {
+   const handleRoomSubmit = async () => {
       const options = {
          method: "POST",
          headers: {
@@ -55,7 +56,7 @@ function ChatApp({ setPage }) {
          body: JSON.stringify({ name: rooms.name }),
       };
 
-      const response = await fetch(`/api_v1/chats/chatrooms/`, options).catch(
+      const response = await fetch(`/api_v1/chatrooms/`, options).catch(
          handleError
       );
 
@@ -64,7 +65,7 @@ function ChatApp({ setPage }) {
       }
       const data = await response.json();
       //needs to write code for room submit
-      setRooms({});
+      setRooms(data);
    };
 
    //*** Create A Message ***/
@@ -109,9 +110,12 @@ function ChatApp({ setPage }) {
    console.log("this is", activeUser.username);
 
    return (
-      <div className="container d-flex overflow-auto" id="chat-room-container">
+      <div
+         className="container d-flex overflow-auto bg-white"
+         id="chat-room-container"
+      >
          {/* Left panel  */}
-         <div className="row g-0 float-start d-block  bg-opacity-50 overflow-auto">
+         <div className="row g-0 float-start d-block  overflow-auto">
             {/* <input className="form-control" id="room-create"></input> */}
             {/* left panel heading */}
             <div className="col-12 ">
@@ -178,16 +182,9 @@ function ChatApp({ setPage }) {
                         </li>
                         <li className="d-flex justify-content-evenly">
                            <Button
-                              className="d-inline-block w-50 bg-danger me-1"
-                              id="delete-btn"
-                              // onClick={handleDeleteRoom}
-                           >
-                              {" "}
-                              <IconTrash />
-                           </Button>
-                           <Button
                               className="d-inline-block w-50"
                               type="submit"
+                              variant="outline-primary"
                               onClick={handleRoomSubmit}
                            >
                               <IconPlus />
@@ -205,9 +202,9 @@ function ChatApp({ setPage }) {
             className="row g-0 w-100 position-relative bg-lighter "
             id="right-side-panel-header"
          >
-            <div className="col-md-8 w-100">
+            <div className="col-md-8 w-100 m-100 ">
                {/* chat container */}
-               <div className="chat-panel ">
+               <div className="chat-panel h-50 position-relative ">
                   {/* * */}
                   {/* chat bubbles */}
                   {/* float left - other ppls chats */}
