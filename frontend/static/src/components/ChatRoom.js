@@ -7,6 +7,8 @@ import "../App.js";
 import { useState, useEffect } from "react";
 import Rooms from "./Rooms";
 import Messages from "./Messages";
+import { IconTrash } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 
 function ChatApp({ setPage }) {
    const [rooms, setRooms] = useState({});
@@ -107,13 +109,13 @@ function ChatApp({ setPage }) {
    console.log("this is", activeUser.username);
 
    return (
-      <div className="container d-flex" id="chat-room-container">
+      <div className="container d-flex overflow-auto" id="chat-room-container">
          {/* Left panel  */}
-         <div className="row g-0 float-start d-block bg-light bg-opacity-50">
+         <div className="row g-0 float-start d-block  bg-opacity-50 overflow-auto">
             {/* <input className="form-control" id="room-create"></input> */}
             {/* left panel heading */}
-            <div className="col-12">
-               <div className="settings-tray p-0 m-0">
+            <div className="col-12 ">
+               <div className="settings-tray p-0 m-0 ">
                   <Accordion>
                      <Accordion.Item eventKey="0">
                         <Accordion.Header>
@@ -143,7 +145,7 @@ function ChatApp({ setPage }) {
 
             {/* left panel heading end */}
             {/* in this room drawer use room list like handlebars js and plug in room names */}
-            <div className="room-drawer">
+            <div className="room-drawer overflow-hidden ">
                <Rooms
                   activeRoomID={activeRoomID}
                   setActiveRoomID={setActiveRoomID}
@@ -176,20 +178,19 @@ function ChatApp({ setPage }) {
                         </li>
                         <li className="d-flex justify-content-evenly">
                            <Button
-                              className="d-inline-block w-50"
+                              className="d-inline-block w-50 bg-danger me-1"
                               id="delete-btn"
-                              variant="outline-danger"
                               // onClick={handleDeleteRoom}
                            >
-                              Delete
+                              {" "}
+                              <IconTrash />
                            </Button>
                            <Button
                               className="d-inline-block w-50"
-                              variant="outline-success"
                               type="submit"
                               onClick={handleRoomSubmit}
                            >
-                              Save
+                              <IconPlus />
                            </Button>
                         </li>
                      </ul>
@@ -200,57 +201,46 @@ function ChatApp({ setPage }) {
          </div>
          {/* right panel */}
          {/* messages go here */}
-         <div className="row g-0  w-100 " id="right-side-panel-header">
+         <div
+            className="row g-0 w-100 position-relative bg-lighter "
+            id="right-side-panel-header"
+         >
             <div className="col-md-8 w-100">
                {/* chat container */}
-               <div className="chat-panel">
+               <div className="chat-panel ">
                   {/* * */}
                   {/* chat bubbles */}
                   {/* float left - other ppls chats */}
-                  <div className="row g-0">
+                  <div className="row g-0 ">
                      <Messages
                         activeRoomID={activeRoomID}
                         activeUser={activeUser}
                      />
-                     {/* <div className="col-md-3">
-                        <div className="chat-bubble float-md-start  bg-secondary">
-                           Hola!
-                        </div>
-                     </div> */}
-                     {/* Other users */}
-                     {/* <div className="row g-0">
-                        <div className="col-md-3 float-md-end offset-md-9">
-                           <div className="chat-bubble float-md-end bg-primary">
-                              Wrong number!
-                           </div>
-                        </div>
-                     </div> */}
-                  </div>
-
-                  <div className="button-tray d-inline-flex w-100">
-                     <form
-                        onSubmit={handleTextSubmit}
-                        className="w-100 d-inline-flex"
-                     >
-                        <label htmlFor="message"></label>
-                        <input
-                           type="text"
-                           name="message"
-                           className="form-control me-1 "
-                           placeholder="enter message here"
-                           value={text}
-                           onChange={(e) => setText(e.target.value)}
-                        />
-                        <Button
-                           type="submit"
-                           variant="outline-primary"
-                           className="me-1 p-3 end-0 d-inline "
-                        >
-                           send
-                        </Button>
-                     </form>
                   </div>
                </div>
+            </div>
+            <div className="button-tray d-inline position-absolute end-0 bottom-0">
+               <form
+                  onSubmit={handleTextSubmit}
+                  className="w-100 d-inline-flex"
+               >
+                  <label htmlFor="message"></label>
+                  <input
+                     type="text"
+                     name="message"
+                     className="form-control me-1"
+                     placeholder="enter message here"
+                     value={text}
+                     onChange={(e) => setText(e.target.value)}
+                  />
+                  <Button
+                     type="submit"
+                     variant="outline-primary"
+                     className="me-1 p-3 end-0 d-inline "
+                  >
+                     send
+                  </Button>
+               </form>
             </div>
          </div>
       </div>

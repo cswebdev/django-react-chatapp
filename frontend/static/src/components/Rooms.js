@@ -16,7 +16,7 @@ function Rooms({ activeRoomID, setActiveRoomID }) {
       getRooms();
       const interval = setInterval(() => {
          getRooms();
-      }, 2000);
+      }, 80000);
       return () => clearInterval(interval);
    }, []);
 

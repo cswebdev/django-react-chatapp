@@ -3,12 +3,9 @@ import Cookies from "js-cookie";
 import Button from "react-bootstrap/esm/Button";
 import ChatApp from "./ChatRoom";
 import "../styles/App.css";
-import Accordion from "react-bootstrap/Accordion";
 import { IconTrash } from "@tabler/icons-react";
-import { IconPencil } from "@tabler/icons-react";
-import AccordionBody from "react-bootstrap/esm/AccordionBody";
 
-//edit button will need to be conditional rendering.
+//edit button will need to be conditional rendering. 
 //add edit save button (inject )
 
 function Messages({ activeRoomID, activeUser }) {
@@ -28,7 +25,7 @@ function Messages({ activeRoomID, activeUser }) {
 
       const interval = setInterval(() => {
          getMessages();
-      }, 1000);
+      }, 9000);
 
       return () => clearInterval(interval);
    }, [activeRoomID]);
@@ -55,49 +52,19 @@ function Messages({ activeRoomID, activeUser }) {
          return (
             <div className="row g-0" key={message.id}>
                <div className={`col-md-3 float-md-end offset-md-9`}>
-                  <Accordion id="chat-accordion">
-                     <Accordion.Item eventKey="0">
-                        <Accordion.Header>
-                           <div
-                              id="chat-message"
-                              key={message.id}
-                              className={`chat-bubble float-md-end bg-primary`}
-                           >
-                              {message.message}
-                           </div>{" "}
-                           <h6>{message.author_name}</h6>
-                        </Accordion.Header>
-                        <AccordionBody className="d-flex justify-content-center">
-                           <Button
-                              className="me-1"
-                              onClick={() => deleteMessage(message.id)}
-                           >
-                              <IconTrash />
-                           </Button>
-                           <Button className="ms-1">
-                              <IconPencil />
-                           </Button>
-                        </AccordionBody>
-                     </Accordion.Item>
-                  </Accordion>
-               </div>{" "}
+                  <h6>{message.author_name}</h6>
+                  <div
+                     id="chat-message"
+                     key={message.id}
+                     className={`chat-bubble float-md-end bg-primary`}
+                  >
+                     {message.message}
+                     <Button onClick={() => deleteMessage(message.id)}>
+                        <IconTrash />
+                     </Button>
+                  </div>
+               </div>
             </div>
-
-            // <div className="row g-0" key={message.id}>
-            //    <div className={`col-md-3 float-md-end offset-md-9`}>
-            //       <h6>{message.author_name}</h6>
-            //       <div
-            //          id="chat-message"
-            //          key={message.id}
-            //          className={`chat-bubble float-md-end bg-primary`}
-            //       >
-            //          {message.message}
-            //          <Button onClick={() => deleteMessage(message.id)}>
-            //             <IconTrash />
-            //          </Button>
-            //       </div>
-            //    </div>
-            // </div>
          );
       } else {
          return (

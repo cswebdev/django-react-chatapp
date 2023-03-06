@@ -1,25 +1,26 @@
  div.g-0.float-start.d-block {
      background-color: aqua;
-     overflow: auto;
+     overflow: hidden;
  }
 
 
 
- .container#chat-room-container {
+ div.container#chat-room-container {
      margin: 60px auto;
      /* background: #fff; */
      background-color: hsla(0, 0%, 97%, 0.946);
      padding: 0;
      border-radius: 15px;
      height: 80vh;
-     overflow-x: hidden;
+     max-height: 800px;
+
  }
 
  .room-drawer {
      border-top: 5px solid rgb(235, 235, 235);
      padding-top: 10%;
-     overflow-y: visible;
-     overflow-x: hidden;
+     /* overflow-y: visible;
+     overflow-x: hidden; */
 
      padding: 0;
      margin: 0;
