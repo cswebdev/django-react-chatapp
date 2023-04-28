@@ -24,9 +24,10 @@ The chat app features the ability to create and delete users, chat rooms, and ev
 
 To run this application locally, you need to have the following software installed:
 
-- Python 3
-- Node.js
-- PostgreSQL
+- Python 
+- Django
+- React
+
 
 Clone the repository and navigate to the project root directory:
 
