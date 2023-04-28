@@ -45,21 +45,6 @@ venv\Scripts\activate  # on Windows
 pip install -r requirements.txt
 ```
 
-Create a PostgreSQL database and update the `DATABASES` setting in `settings.py`:
-
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '<database-name>',
-        'USER': '<database-user>',
-        'PASSWORD': '<database-password>',
-        'HOST': '<database-host>',
-        'PORT': '<database-port>',
-    }
-}
-```
-
 Install the JavaScript dependencies and start the development server:
 
 ```bash
