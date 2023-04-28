@@ -1,7 +1,9 @@
-# Fullstack Django React App
+# Fullstack Django React Chat App 
 
 This repository contains the code for a fullstack web application built with Django and React. The application provides a simple web interface to manage simple text communication.
 The chat app features the ability to create and delete users, chat rooms, and even messages!
+
+The project is not currenty hosted so you will need to clone the project. 
 
 
 ## Features
